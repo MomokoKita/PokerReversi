@@ -214,7 +214,7 @@ public class Reversi : MonoBehaviour
         {
             for (int c = 0; c < _columns; c++)
             {
-                _cells[r, c].PutNoneCheck();
+                _cells[r, c].PutAll();
                 if(_cells[r,c].CellState == CellState.Black)
                 {
                     blackCount++;
@@ -228,6 +228,10 @@ public class Reversi : MonoBehaviour
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
     }
+
+    /// <summary>
+    /// PutNoneを全てNoneにする
+    /// </summary>
     public void NoneReset()
     {
         for (int r = 0; r < _rows; r++)
@@ -240,6 +244,22 @@ public class Reversi : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool Pass()
+    {
+        for (int r = 0; r < _rows; r++)
+        {
+            for (int c = 0; c < _columns; c++)
+            {
+                if (_cells[r, c].CellState == CellState.PutNone)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+        
     }
 
     /// <summary>
