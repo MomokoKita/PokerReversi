@@ -13,12 +13,11 @@ public enum CellState
 
 public enum PokerState
 {
+    Wait = 0,
     One = 1,
     Two = 2,
     Three = 3,
     Four = 4,
-    Five = 5,
-    None = -1,
 }
 
 public class Cell : MonoBehaviour
@@ -26,10 +25,11 @@ public class Cell : MonoBehaviour
     [SerializeField]
     private CellState _cellState = CellState.None;
     [SerializeField]
-    private PokerState _pokerState = PokerState.None;
+    private PokerState _pokerState = PokerState.One;
 
     [SerializeField] Image m_image = null;
     [SerializeField] Image p_image = null;
+    [SerializeField] Image point = null;
     [SerializeField] Text num_text = null;
 
     //配列の座標
@@ -44,12 +44,6 @@ public class Cell : MonoBehaviour
         OnPokerStateChanged();
     }
 
-    //private void Update()
-    //{
-    //    OnCellStateChanged();
-    //    OnPokerStateChanged();
-    //}
-
     public void GetCoordinate(int r, int c)
     {
         row = r;
@@ -59,6 +53,7 @@ public class Cell : MonoBehaviour
     private void OnValidate()
     {
         OnCellStateChanged();
+        OnPokerStateChanged();
 
     }
 
@@ -78,18 +73,20 @@ public class Cell : MonoBehaviour
         set
         {
             _pokerState = value;
-            OnCellStateChanged();
+            OnPokerStateChanged();
         }
     }
     private void OnCellStateChanged()
     {
         if (_cellState == CellState.None)
         {
+            point.color = Color.clear;
             p_image.color = Color.clear;
             m_image.color = Color.green;
         }
         if (_cellState == CellState.White)
         {
+            point.color = Color.clear;
             p_image.color = Color.white;
             m_image.color = Color.green;
 
@@ -102,23 +99,37 @@ public class Cell : MonoBehaviour
         }
         if (_cellState == CellState.PutNone)
         {
-            Debug.Log("おけるよ");
             m_image.color = Color.yellow;
         }
     }
 
     private void OnPokerStateChanged()
     {
-        if (_pokerState == PokerState.None && _cellState==CellState.Black)
+        if(_cellState == CellState.White || _cellState == CellState.None)
         {
-            num_text.text = ((int)Random.Range(1, 6)).ToString();
-            //num_text.text = "";
-            num_text.color = Color.white;
+            point.color = Color.clear;
+            return;
         }
-        if (_pokerState == PokerState.None && _cellState == CellState.White)
+        if (_pokerState == PokerState.One)
         {
-            num_text.color = Color.clear;
+            point.color = new Color(255f / 255f, 255f / 255f, 0f / 255f);
         }
+        else if (_pokerState == PokerState.Two)
+        {
+            point.color = new Color(0f / 255f, 128f / 255f, 0f / 255f);
+        }
+        else if (_pokerState == PokerState.Three)
+        {
+            point.color = new Color(204f / 255f, 153f / 255f, 255f / 255f);
+        }
+        else if (_pokerState == PokerState.Four)
+        {
+            point.color = new Color(255f / 255f, 0f / 255f, 0f / 255f);
+        }
+        else
+        {
+            _pokerState = PokerState.Wait;
+        }                
     }
 
     public void Put()
@@ -129,9 +140,8 @@ public class Cell : MonoBehaviour
             ReverseAll();            
             if (!(this.CellState == CellState.None || this.CellState == CellState.PutNone))
             {
-                OnPokerStateChanged();
-                reversi.GetComponent<Reversi>().TrunChenge();                
-                
+                reversi.GetComponent<Reversi>().TrunChenge();
+                reversi.GetComponent<Reversi>().AllCheck();
             } 
         }
         else
@@ -139,7 +149,7 @@ public class Cell : MonoBehaviour
             if (!reversi.GetComponent<Reversi>().Pass())
             {
                 reversi.GetComponent<Reversi>().TrunChenge();
-            }           
+            }
         }
 
     }

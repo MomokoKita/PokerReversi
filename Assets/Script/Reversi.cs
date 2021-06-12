@@ -30,7 +30,7 @@ public class Reversi : MonoBehaviour
 
 
     //false = 黒 true = 白
-    bool trun = false;
+    bool trun = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,9 +71,13 @@ public class Reversi : MonoBehaviour
     }
 
     private void Update()
-    {
-        NoneReset();
+    {       
         AllCheck();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PassCode();
+        }
+        
     }
 
     public void ReverseCheck(int r,int c,int directionR, int directionC)
@@ -114,6 +118,8 @@ public class Reversi : MonoBehaviour
                 while (!(r_check2 == r_check && c_check2 == c_check))
                 {
                     _cells[r_check2, c_check2].CellState = flag;
+                    Debug.Log("ひっくり返してる");
+                    _cells[r_check2, c_check2].PorkerState++;
                     r_check2 += directionR;
                     c_check2 += directionC;           
                 }
@@ -208,6 +214,7 @@ public class Reversi : MonoBehaviour
     /// </summary>
     public void AllCheck()
     {
+        NoneReset();
         int blackCount=0;
         int whiteCount = 0;
         for (int r = 0; r < _rows; r++)
@@ -224,6 +231,10 @@ public class Reversi : MonoBehaviour
                     whiteCount++;
                 }
             }
+        }
+        if (blackCount == 0 || whiteCount == 0)
+        {
+            Debug.Log("ゲームくりあ");
         }
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
@@ -269,4 +280,29 @@ public class Reversi : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+
+
+
+    /***********************************************************************************************************************/
+
+
+    /// <summary>
+    /// パスのチートコード
+    /// </summary>
+    public void PassCode()
+    {
+        //9手目で詰むプログラム
+        _cells[5, 4].Put();
+        _cells[3, 5].Put();
+        _cells[2, 4].Put();
+        _cells[5, 3].Put();
+        _cells[4, 7].Put();
+        _cells[6, 6].Put();
+        _cells[7, 4].Put();
+        _cells[4, 6].Put();
+        _cells[4, 2].Put();
+
+    }
+
 }
