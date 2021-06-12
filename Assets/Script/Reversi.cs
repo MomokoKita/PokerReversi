@@ -15,6 +15,9 @@ public class Reversi : MonoBehaviour
     private Text whiteText = null;
 
     [SerializeField]
+    private GameObject p_event = null;
+
+    [SerializeField]
     private int _rows = 1;　//X
 
     [SerializeField]
@@ -118,7 +121,6 @@ public class Reversi : MonoBehaviour
                 while (!(r_check2 == r_check && c_check2 == c_check))
                 {
                     _cells[r_check2, c_check2].CellState = flag;
-                    Debug.Log("ひっくり返してる");
                     _cells[r_check2, c_check2].PorkerState++;
                     r_check2 += directionR;
                     c_check2 += directionC;           
@@ -200,11 +202,13 @@ public class Reversi : MonoBehaviour
         if (trun)
         {
             trunText.text = "黒のターン";
+            trunText.color = Color.black;
             trun = false;
         }
         else if(!trun)
         {
             trunText.text = "白のターン";
+            trunText.color = Color.white;
             trun = true;
         }
     }
@@ -235,6 +239,10 @@ public class Reversi : MonoBehaviour
         if (blackCount == 0 || whiteCount == 0)
         {
             Debug.Log("ゲームくりあ");
+        }
+        if (blackCount+whiteCount == _rows*_columns)
+        {
+
         }
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
@@ -269,6 +277,7 @@ public class Reversi : MonoBehaviour
                 }
             }
         }
+        p_event.SetActive(true);
         return false;
         
     }

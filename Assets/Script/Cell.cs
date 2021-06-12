@@ -128,7 +128,8 @@ public class Cell : MonoBehaviour
         }
         else
         {
-            _pokerState = PokerState.Wait;
+            point.color = new Color(255f / 255f, 255f / 255f, 0f / 255f);
+            _pokerState = PokerState.One;
         }                
     }
 
@@ -148,6 +149,7 @@ public class Cell : MonoBehaviour
         {
             if (!reversi.GetComponent<Reversi>().Pass())
             {
+                Debug.Log("パス判定");
                 reversi.GetComponent<Reversi>().TrunChenge();
             }
         }

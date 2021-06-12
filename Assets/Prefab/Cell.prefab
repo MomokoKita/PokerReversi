@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cellState: -1
   _pokerState: -1
+  p_event: {fileID: 7033419244599507782, guid: efdeac3747784504a810ee7a1e9d0244, type: 3}
   m_image: {fileID: 8431388675557485213}
   p_image: {fileID: 4642337632441647165}
   point: {fileID: 7578767209380262781}
