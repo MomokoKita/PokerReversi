@@ -18,6 +18,11 @@ public class Reversi : MonoBehaviour
     private GameObject p_event = null;
 
     [SerializeField]
+    private GameObject panel = null;
+    [SerializeField]
+    private GameObject pause = null;
+
+    [SerializeField]
     private int _rows = 1;　//X
 
     [SerializeField]
@@ -81,6 +86,7 @@ public class Reversi : MonoBehaviour
             PassCode();
         }
         
+
     }
 
     public void ReverseCheck(int r,int c,int directionR, int directionC)
@@ -236,13 +242,9 @@ public class Reversi : MonoBehaviour
                 }
             }
         }
-        if (blackCount == 0 || whiteCount == 0)
-        {
-            Debug.Log("ゲームくりあ");
-        }
         if (blackCount+whiteCount == _rows*_columns)
         {
-
+            Debug.Log("ゲームクリア");
         }
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
@@ -279,6 +281,14 @@ public class Reversi : MonoBehaviour
         }
         p_event.SetActive(true);
         return false;
+        
+    }
+
+    public void Pause()
+    {
+        panel.SetActive(true);
+        pause.SetActive(true);
+        Debug.Log("ぼたん");
         
     }
 
