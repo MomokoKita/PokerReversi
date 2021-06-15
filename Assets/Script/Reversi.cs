@@ -23,6 +23,9 @@ public class Reversi : MonoBehaviour
     private GameObject pause = null;
 
     [SerializeField]
+    private GameObject next = null;
+
+    [SerializeField]
     private int _rows = 1;　//X
 
     [SerializeField]
@@ -36,6 +39,17 @@ public class Reversi : MonoBehaviour
 
     Cell[,] _cells;
 
+
+    //リザルトに送る用
+    public static int w_one = 0;
+    public static int w_two = 0;
+    public static int w_three = 0;
+    public static int w_four = 0;
+
+    public static int b_one = 0;
+    public static int b_two = 0;
+    public static int b_three = 0;
+    public static int b_four = 0;
 
     //false = 黒 true = 白
     bool trun = true;
@@ -127,7 +141,7 @@ public class Reversi : MonoBehaviour
                 while (!(r_check2 == r_check && c_check2 == c_check))
                 {
                     _cells[r_check2, c_check2].CellState = flag;
-                    _cells[r_check2, c_check2].PorkerState++;
+                    _cells[r_check2, c_check2].PokerState++;
                     r_check2 += directionR;
                     c_check2 += directionC;           
                 }
@@ -244,10 +258,27 @@ public class Reversi : MonoBehaviour
         }
         if (blackCount+whiteCount == _rows*_columns)
         {
-            Debug.Log("ゲームクリア");
+            next.SetActive(true);
+            WhiteOpen();
+            
         }
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
+    }
+
+    public void WhiteOpen()
+    {
+        for (int r = 0; r < _rows; r++)
+        {
+            for (int c = 0; c < _columns; c++)
+            {
+                if (_cells[r, c].CellState == CellState.White)
+                {
+                    _cells[r, c].WhiteAllOpen();
+                }
+            }
+        }
+        
     }
 
     /// <summary>
@@ -255,6 +286,7 @@ public class Reversi : MonoBehaviour
     /// </summary>
     public void NoneReset()
     {
+        
         for (int r = 0; r < _rows; r++)
         {
             for (int c = 0; c < _columns; c++)
@@ -262,9 +294,60 @@ public class Reversi : MonoBehaviour
                 if (_cells[r,c].CellState == CellState.PutNone)
                 {
                     _cells[r, c].CellState = CellState.None;
+                    
                 }
             }
         }
+        
+    }
+
+    public void Result()
+    {
+        for (int r = 0; r < _rows; r++)
+        {
+            for (int c = 0; c < _columns; c++)
+            {
+                if (_cells[r, c].CellState == CellState.White)
+                {
+                    if (_cells[r, c].PokerState == PokerState.One)
+                    {
+                        w_one++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Two)
+                    {
+                        w_two++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Three)
+                    {
+                        w_three++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Four)
+                    {
+                        w_four++;
+                    }
+                }
+                if (_cells[r, c].CellState == CellState.Black)
+                {
+                    if (_cells[r, c].PokerState == PokerState.One)
+                    {
+                        b_one++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Two)
+                    {
+                        b_two++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Three)
+                    {
+                        b_three++;
+                    }
+                    else if (_cells[r, c].PokerState == PokerState.Four)
+                    {
+                        b_four++;
+                    }
+                }
+            }
+        }
+        SceneManager.LoadScene("Result");
     }
 
     public bool Pass()
@@ -287,9 +370,7 @@ public class Reversi : MonoBehaviour
     public void Pause()
     {
         panel.SetActive(true);
-        pause.SetActive(true);
-        Debug.Log("ぼたん");
-        
+        pause.SetActive(true);        
     }
 
     /// <summary>

@@ -13,7 +13,6 @@ public enum CellState
 
 public enum PokerState
 {
-    Wait = 0,
     One = 1,
     Two = 2,
     Three = 3,
@@ -30,7 +29,6 @@ public class Cell : MonoBehaviour
     [SerializeField] Image m_image = null;
     [SerializeField] Image p_image = null;
     [SerializeField] Image point = null;
-    [SerializeField] Text num_text = null;
 
     //配列の座標
     private int row;
@@ -67,7 +65,7 @@ public class Cell : MonoBehaviour
         }
     }
 
-    public PokerState PorkerState
+    public PokerState PokerState
     {
         get => _pokerState;
         set
@@ -105,11 +103,7 @@ public class Cell : MonoBehaviour
 
     private void OnPokerStateChanged()
     {
-        if(_cellState == CellState.White || _cellState == CellState.None)
-        {
-            point.color = Color.clear;
-            return;
-        }
+        
         if (_pokerState == PokerState.One)
         {
             point.color = new Color(255f / 255f, 255f / 255f, 0f / 255f);
@@ -130,7 +124,12 @@ public class Cell : MonoBehaviour
         {
             point.color = new Color(255f / 255f, 255f / 255f, 0f / 255f);
             _pokerState = PokerState.One;
-        }                
+        }
+        if (_cellState == CellState.White || _cellState == CellState.None)
+        {
+            point.color = Color.clear;
+            return;
+        }
     }
 
     public void Put()
@@ -154,6 +153,26 @@ public class Cell : MonoBehaviour
             }
         }
 
+    }
+
+    public void WhiteAllOpen()
+    {
+        if (_pokerState == PokerState.One)
+        {
+            point.color = new Color(255f / 255f, 255f / 255f, 0f / 255f);
+        }
+        else if (_pokerState == PokerState.Two)
+        {
+            point.color = new Color(0f / 255f, 128f / 255f, 0f / 255f);
+        }
+        else if (_pokerState == PokerState.Three)
+        {
+            point.color = new Color(204f / 255f, 153f / 255f, 255f / 255f);
+        }
+        else if (_pokerState == PokerState.Four)
+        {
+            point.color = new Color(255f / 255f, 0f / 255f, 0f / 255f);
+        }
     }
 
     public void PutAll()
