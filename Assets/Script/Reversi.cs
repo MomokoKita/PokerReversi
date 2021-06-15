@@ -51,6 +51,9 @@ public class Reversi : MonoBehaviour
     public static int b_three = 0;
     public static int b_four = 0;
 
+    public static int black = 0;
+    public static int white = 0;
+
     //false = 黒 true = 白
     bool trun = true;
     // Start is called before the first frame update
@@ -99,7 +102,11 @@ public class Reversi : MonoBehaviour
         {
             PassCode();
         }
-        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SceneManager.LoadScene("Result");
+        }
+
 
     }
 
@@ -264,6 +271,8 @@ public class Reversi : MonoBehaviour
         }
         blackText.text = "黒：" + blackCount;
         whiteText.text = "白：" + whiteCount;
+        black = blackCount;
+        white = whiteCount; 
     }
 
     public void WhiteOpen()
